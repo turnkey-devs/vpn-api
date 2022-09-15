@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "alwaysStrict": true,
+    "target": "ES2018",
+    "module": "ESNext",
+    "lib": [
+      "ES2015",
+      "ES2020",
+      "ESNext",
+      "DOM"
+    ],
+    "rootDir": ".",
+    "baseUrl": "src/",
+    "outDir": "dist/",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": [
+      "node",
+    ],
+    "useUnknownInCatchVariables": false,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "paths": {
+      "@server/ui/*": [
+        "./ui/*"
+      ],
+      "@server/core/*": [
+        "./core/*"
+      ],
+      "@server/gateway/*": [
+        "./gateway/*"
+      ],
+      "@common/*": [
+        "./core/common/*",
+      ]
+    },
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
