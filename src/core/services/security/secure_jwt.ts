@@ -28,7 +28,6 @@ export type ConfigSecureJwtService = DeepRequired<typeof DEFAULT_CONFIG_SECURE_J
  */
 export const SecureJWT = async (initConfig?: DeepPartial<ConfigSecureJwtService>) => {
   const _client = jwt
-  console.log(DEFAULT_CONFIG_SECURE_JWT)
   const _config = Object.assign(DEFAULT_CONFIG_SECURE_JWT, initConfig) as ConfigSecureJwtService
   const validConfigResponse = (() => {
     const result = modelValidator(_config)

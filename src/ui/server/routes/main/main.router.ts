@@ -4,9 +4,9 @@ import { NextFunctionType } from '../../model/next_function.model'
 
 export const MainRouter = Router()
 
-MainRouter.get('/', async (_requset, _response, next: NextFunctionType) => {
+MainRouter.get('/', async (_request, _response, next: NextFunctionType) => {
     try {
-        const resp = `This is main route`
+        const resp = `Open VPN Project Server`
         next({ response: { raw: resp } })
         return
     } catch (error) {
