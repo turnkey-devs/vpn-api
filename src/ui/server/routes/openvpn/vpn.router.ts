@@ -4,10 +4,14 @@ import { NextFunctionType } from '../../model/next_function.model'
 import { exec } from 'child_process'
 import { easyExistPath } from '@server/core/common/easy_file'
 
-const defaultCertValidDay = 3
-const defaultRevokeReason = 'unspecified'
-const certPath = `/etc/openvpn/server/easy-rsa/pki/issued`
-const privateKeyPath = `/etc/openvpn/server/easy-rsa/pki/private`
+const defaultCertValidDay = process.env.DEFAULT_CERT_VALID_DAY
+const defaultRevokeReason = process.env.DEFAULT_REVOKE_REASON
+const certPath = process.env.CERT_PATH
+const privateKeyPath = process.env.PRIVATE_KEY_PATH
+const preCommand = process.env.PRE_COMMAND
+const addClientScript = process.env.ADD_CLIENT_SCRIPT
+const revokeClientScript = process.env.REVOKE_CLIENT_SCRIPT
+const renewCertScript = process.env.RENEW_CERT_SCRIPT
 
 export const VpnRouter = Router()
 
@@ -20,8 +24,10 @@ VpnRouter.get('/add-client', (_request, _response, next: NextFunctionType) => {
 
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
+        
+        console.log(`${preCommand} ${addClientScript} ${name} ${days ?? defaultCertValidDay}`)
 
-        exec(`bash openvpn-add-client.sh ${name} ${days ?? defaultCertValidDay}`, (error, stdout, stderr) => {
+        exec(`${preCommand} ${addClientScript} ${name} ${days ?? defaultCertValidDay}`, (error, stdout, stderr) => {
             if (error) throw new ExpressError(error.message)
 
             if (!isCertExist(String(name)))
@@ -44,7 +50,7 @@ VpnRouter.get('/revoke-client', (_request, _response, next: NextFunctionType) =>
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
 
-        exec(`bash openvpn-revoke-client.sh ${name} ${reason ?? defaultRevokeReason}`, (error, stdout, stderr) => {
+        exec(`${preCommand} ${revokeClientScript} ${name} ${reason ?? defaultRevokeReason}`, (error, stdout, stderr) => {
             if (error) throw new ExpressError(error.message)
 
             if (isCertExist(String(name)))
@@ -67,7 +73,7 @@ VpnRouter.get(`/renew-cert`, (_request, _response, next: NextFunctionType) => {
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
 
-        exec(`bash openvpn-renew-cert.sh ${name} ${days ?? defaultCertValidDay}`, (error, stdout, stderr) => {
+        exec(`${preCommand} ${renewCertScript} ${name} ${days ?? defaultCertValidDay}`, (error, stdout, stderr) => {
             if (error) throw new ExpressError(error.message)
 
             if (!isCertExist(String(name)))
