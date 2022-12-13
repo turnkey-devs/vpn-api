@@ -25,8 +25,6 @@ VpnRouter.get('/add-client', (_request, _response, next: NextFunctionType) => {
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
         
-        console.log(`${preCommand} ${addClientScript} ${name} ${days ?? defaultCertValidDay}`)
-
         exec(`${preCommand} ${addClientScript} ${name} ${days ?? defaultCertValidDay}`, (error, stdout, stderr) => {
             if (error) throw new ExpressError(error.message)
 

@@ -22,8 +22,8 @@ fi
 USER=$1
 DAYS=$2
 cd /etc/openvpn/server/easy-rsa/
-./easyrsa --days=$DAYS --batch renew $USER nopass
-./easyrsa --batch revoke-renewed $USER
+echo yes | ./easyrsa --days=$DAYS renew $USER nopass
+echo yes | ./easyrsa revoke-renewed $USER
 ./easyrsa gen-crl
 cp pki/crl.pem ../
 echo ""

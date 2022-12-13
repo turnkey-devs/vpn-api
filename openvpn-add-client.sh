@@ -12,19 +12,19 @@ fi
 
 newclient () {
 	# Generates the custom client.ovpn
-	cp /etc/openvpn/server/client-common.txt ~/ovpn/clients/$1.ovpn
-	echo "<ca>" >> ~/ovpn/clients/$1.ovpn
-	cat /etc/openvpn/server/easy-rsa/pki/ca.crt >> ~/ovpn/clients/$1.ovpn
-	echo "</ca>" >> ~/ovpn/clients/$1.ovpn
-	echo "<cert>" >> ~/ovpn/clients/$1.ovpn
-	cat /etc/openvpn/server/easy-rsa/pki/issued/$1.crt >> ~/ovpn/clients/$1.ovpn
-	echo "</cert>" >> ~/ovpn/clients/$1.ovpn
-	echo "<key>" >> ~/ovpn/clients/$1.ovpn
-	cat /etc/openvpn/server/easy-rsa/pki/private/$1.key >> ~/ovpn/clients/$1.ovpn
-	echo "</key>" >> ~/ovpn/clients/$1.ovpn
-	echo "<tls-crypt>" >> ~/ovpn/clients/$1.ovpn
-	cat /etc/openvpn/server/tc.key >> ~/ovpn/clients/$1.ovpn
-	echo "</tls-crypt>" >> ~/ovpn/clients/$1.ovpn
+	cp /etc/openvpn/server/client-common.txt /home/bitnami/ovpn/clients/$1.ovpn
+	echo "<ca>" >> /home/bitnami/ovpn/clients/$1.ovpn
+	cat /etc/openvpn/server/easy-rsa/pki/ca.crt >> /home/bitnami/ovpn/clients/$1.ovpn
+	echo "</ca>" >> /home/bitnami/ovpn/clients/$1.ovpn
+	echo "<cert>" >> /home/bitnami/ovpn/clients/$1.ovpn
+	cat /etc/openvpn/server/easy-rsa/pki/issued/$1.crt >> /home/bitnami/ovpn/clients/$1.ovpn
+	echo "</cert>" >> /home/bitnami/ovpn/clients/$1.ovpn
+	echo "<key>" >> /home/bitnami/ovpn/clients/$1.ovpn
+	cat /etc/openvpn/server/easy-rsa/pki/private/$1.key >> /home/bitnami/ovpn/clients/$1.ovpn
+	echo "</key>" >> /home/bitnami/ovpn/clients/$1.ovpn
+	echo "<tls-crypt>" >> /home/bitnami/ovpn/clients/$1.ovpn
+	cat /etc/openvpn/server/tc.key >> /home/bitnami/ovpn/clients/$1.ovpn
+	echo "</tls-crypt>" >> /home/bitnami/ovpn/clients/$1.ovpn
 }
 
 if [ "$1" = "" ]; then
@@ -39,8 +39,8 @@ fi
 USER=$1
 DAYS=$2
 cd /etc/openvpn/server/easy-rsa/
-./easyrsa --days=$DAYS build-client-full $USER nopass
+echo yes | ./easyrsa --days=$DAYS build-client-full $USER nopass
 newclient $USER
 echo ""
-echo "Client $USER added, configuration is available at" ~/ovpn/clients/"$USER.ovpn"
+echo "Client $USER added, configuration is available at" /home/bitnami/ovpn/clients/"$USER.ovpn"
 echo ""
