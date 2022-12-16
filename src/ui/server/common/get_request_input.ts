@@ -1,5 +1,5 @@
-import { isEmpty } from "@server/core/common/is_empty"
 import { DeepObjectPlainMerge } from "@server/gateway/http_client/common/deep_object_merge"
+import { isEmpty } from "@turnkeyid/utils-ts";
 
 export const getRequestQuery = <R extends Record<string, string | number>>(
   request: {

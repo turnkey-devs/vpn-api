@@ -1,8 +1,8 @@
 import { Router } from 'express'
+import { exec } from 'child_process'
+import { easyExistPath } from '@turnkeyid/utils-ts'
 import { ExpressError } from '../../errors/express.error'
 import { NextFunctionType } from '../../model/next_function.model'
-import { exec } from 'child_process'
-import { easyExistPath } from '@server/core/common/easy_file'
 
 const defaultCertValidDay = process.env.DEFAULT_CERT_VALID_DAY
 const defaultRevokeReason = process.env.DEFAULT_REVOKE_REASON
@@ -18,9 +18,9 @@ export const VpnRouter = Router()
 const isCertExist = (name: string) => easyExistPath(`${certPath}/${name}.crt`)
 const isKeyExist = (name: string) => easyExistPath(`${privateKeyPath}/${name}.key`)
 
-VpnRouter.get('/add-client', (_request, _response, next: NextFunctionType) => {
+VpnRouter.post('/add-client', (_request, _response, next: NextFunctionType) => {
     try {
-        const { name, days } = _request.query
+        const { name, days } = _request.body
 
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
@@ -41,9 +41,9 @@ VpnRouter.get('/add-client', (_request, _response, next: NextFunctionType) => {
     }
 })
 
-VpnRouter.get('/revoke-client', (_request, _response, next: NextFunctionType) => {
+VpnRouter.post('/revoke-client', (_request, _response, next: NextFunctionType) => {
     try {
-        const { name, reason } = _request.query
+        const { name, reason } = _request.body
 
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
@@ -64,9 +64,9 @@ VpnRouter.get('/revoke-client', (_request, _response, next: NextFunctionType) =>
     }
 })
 
-VpnRouter.get(`/renew-cert`, (_request, _response, next: NextFunctionType) => {
+VpnRouter.post(`/renew-cert`, (_request, _response, next: NextFunctionType) => {
     try {
-        const { name, days } = _request.query
+        const { name, days } = _request.body
 
         if (!name)
             throw new ExpressError({ message: 'client name is required' })

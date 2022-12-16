@@ -2,7 +2,6 @@ import { createServer } from 'http'
 import express, { Express as ApiClient } from 'express'
 import { killer } from "cross-port-killer"
 import { checkPort } from "get-port-please"
-import { sleep } from '@server/core/common/common_utils'
 import cors from 'cors'
 import helmet from 'helmet'
 import { serverConfig } from '@server/core/config/server_config'
@@ -12,6 +11,7 @@ import { responseHandler } from './middlewares/response.handler'
 import { authorizationHandler } from './middlewares/authorization_middleware'
 import { errorHandler } from './middlewares/error.handler'
 import { serverLogger } from './common/server_logger'
+import { sleep } from '@turnkeyid/utils-ts'
 
 export class ApiApp {
   private readonly _config = serverConfig.api

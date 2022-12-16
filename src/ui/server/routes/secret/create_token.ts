@@ -1,6 +1,5 @@
-import { getDateOffset } from '@server/core/common/date_helper';
-import { isEmpty } from '@server/core/common/is_empty';
 import { SecureJWT } from '@server/core/services/security/secure_jwt';
+import { getDateOffset, isEmpty } from '@turnkeyid/utils-ts';
 import { Request, Response, Router } from 'express'
 import { ExpressError } from '../../errors/express.error';
 import { QuizAuth } from '../../middlewares/models/quiz_auth_payload';

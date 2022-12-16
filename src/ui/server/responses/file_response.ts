@@ -1,5 +1,5 @@
-import { Response } from 'express'
-import { FileResponseData } from '../model/file_response.model'
+import type { Response } from 'express'
+import type { FileResponseData } from '../model/file_response.model'
 
 export const fileResponse = (response_: Response, file: FileResponseData) => {
   file.filename ? response_.attachment(file.filename) : void 0

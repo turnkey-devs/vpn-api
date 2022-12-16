@@ -1,6 +1,6 @@
-import { ExpressError } from "../errors/express.error"
-import { SuccessResponseData } from "../responses/success_response"
-import { FileResponseData } from "./file_response.model"
+import type { ExpressError } from "../errors/express.error"
+import type { SuccessResponseData } from "../responses/success_response"
+import type { FileResponseData } from "./file_response.model"
 
 export type ResponseData = {
   raw?: string | number | Record<string, unknown>;
@@ -10,9 +10,9 @@ export type ResponseData = {
 
 export type ErrorResponse = ExpressError
 
-export type NextFunctionArgs = {
+export type NextFunctionArguments = {
   error?: ErrorResponse;
   response?: ResponseData;
 }
 
-export type NextFunctionType = (passedArguments?: NextFunctionArgs) => void
+export type NextFunctionType = (passedArguments?: NextFunctionArguments) => void
