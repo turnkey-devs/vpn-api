@@ -1,45 +1,42 @@
 {
+  "extends": "./tsconfig.path.json",
   "compilerOptions": {
-    "strict": true,
-    "alwaysStrict": true,
+    "strict": false,
+    "alwaysStrict": false,
+    "outDir": "dist",
+    "newLine": "LF",
     "target": "ES2018",
     "module": "ESNext",
     "lib": [
       "ES2015",
-      "ES2020",
+      "ES2018",
       "ESNext",
       "DOM"
     ],
-    "rootDir": ".",
-    "baseUrl": "src/",
-    "outDir": "dist/",
-    "moduleResolution": "node",
     "esModuleInterop": true,
-    "types": [
-      "node",
-    ],
-    "useUnknownInCatchVariables": false,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "importHelpers": true,
     "noImplicitAny": false,
+    "noImplicitThis": false,
+    "pretty": true,
+    "sourceMap": false,
+    "allowJs": true,
+    "noEmit": false,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "exactOptionalPropertyTypes": false,
+    "emitDecoratorMetadata": true,
+    "useUnknownInCatchVariables": false,
+    "removeComments": true,
     "resolveJsonModule": true,
-    "paths": {
-      "@server/ui/*": [
-        "./ui/*"
-      ],
-      "@server/core/*": [
-        "./core/*"
-      ],
-      "@server/gateway/*": [
-        "./gateway/*"
-      ],
-      "@common/*": [
-        "./core/common/*",
-      ]
-    },
   },
-  "include": [
-    "src"
-  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*deprecate*"
   ]
 }

@@ -7,9 +7,9 @@ import { isEmpty } from '../common/is_empty'
 import { dataSize } from '../common/data_size'
 import { FileObject } from '../models/file_object'
 import { DeepObjectMerge } from '../common/deep_object_merge'
-import { omitUndefinedProperty } from '../common/omit_undefined_property'
 import { HTTPClientService } from './http_client_service.interface'
-import { prettyLoggerLegacy } from '@server/core/logger/pretty_logger'
+import { omitUndefinedProperty } from '@turnkeyid/utils-ts'
+import { mainLogger } from '@server/core/logger/pretty_logger'
 
 const DEFAULT_OPTIONS: HttpClientConfigProperties = {
   timeout: 60 * 1000,
@@ -20,7 +20,7 @@ export class AxiosHttpClientService implements HTTPClientService {
   private readonly _client: AxiosInstance
   private _options: HttpClientConfigProperties = DEFAULT_OPTIONS
 
-  private readonly _logger = prettyLoggerLegacy
+  private readonly _logger = mainLogger
 	
   constructor() {
     this._client = Axios.create()
@@ -63,7 +63,7 @@ export class AxiosHttpClientService implements HTTPClientService {
     configs?: HttpClientConfigProperties,
   ): Promise<any> => {
     try {
-      this._logger(module, `get`, { url, data, configs }, `DEBUG`)
+      this._logger(`get`, { url, data, configs }, `DEBUG`)
 			
       const queryString = data && !isEmpty(data)
         ? `?${ qs.stringify(data) }`
@@ -91,7 +91,7 @@ export class AxiosHttpClientService implements HTTPClientService {
       return response
     } catch (error) {
       const clientConfigs = this._getHttpClientConfigs(configs)
-      this._logger(module, `get`, { error, data, clientConfigs, configs }, `ERROR`)
+      this._logger(`get`, { error, data, clientConfigs, configs }, `ERROR`)
       throw error			
     }
   }
@@ -120,7 +120,7 @@ export class AxiosHttpClientService implements HTTPClientService {
     configs: HttpClientConfigProperties = { responseType: `arraybuffer` },
   ): Promise<FileObject | undefined> => {
     try {
-      this._logger(module, `getFile`, { url, data, configs }, `DEBUG`)
+      this._logger(`getFile`, { url, data, configs }, `DEBUG`)
 			
       const queryString = !isEmpty(data)
         ? `?${ qs.stringify(data) }`
@@ -148,7 +148,7 @@ export class AxiosHttpClientService implements HTTPClientService {
         return this._fileObjectMapper(response, url + `${ queryString }`)
     } catch (error) {
       const clientConfigs = this._getHttpClientConfigs(configs)
-      this._logger(module, `getFile`, { error, data, configs, clientConfigs }, `ERROR`)
+      this._logger(`getFile`, { error, data, configs, clientConfigs }, `ERROR`)
       throw error			
     }
   }
@@ -159,7 +159,7 @@ export class AxiosHttpClientService implements HTTPClientService {
     configs?: HttpClientConfigProperties,
   ): Promise<any> => {
     try {
-      this._logger(module, `post`, { url, data, configs }, `DEBUG`)
+      this._logger(`post`, { url, data, configs }, `DEBUG`)
 			
       const clientConfigs = this._getHttpClientConfigs(configs)
       const response = await this._client.post(url, data, clientConfigs)
@@ -179,7 +179,7 @@ export class AxiosHttpClientService implements HTTPClientService {
       return response.data
     } catch (error) {
       const clientConfigs = this._getHttpClientConfigs(configs)
-      this._logger(module, `get`, { error, data, configs, clientConfigs }, `ERROR`)
+      this._logger(`get`, { error, data, configs, clientConfigs }, `ERROR`)
       throw error
     }
   }

@@ -1,6 +1,6 @@
-import EnvLoader from "@server/core/common/env_loader"
-import { prettyLoggerLegacy } from "@server/core/logger/pretty_logger";
 import { ApiApp } from "@server/ui/server/api_application";
+import EnvLoader from "./core/config/env_loader";
+import { mainLogger } from "./core/logger/pretty_logger";
 
 EnvLoader()
 
@@ -11,6 +11,6 @@ const main = async () => {
   ])
 }
 
-main().catch(async error => prettyLoggerLegacy(module, `main-error`, error, `ERROR`))
+main().catch(async error => mainLogger(`main-error`, { error }, `ERROR`))
 
 export default main

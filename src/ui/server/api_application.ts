@@ -7,14 +7,15 @@ import helmet from 'helmet'
 import { serverConfig } from '@server/core/config/server_config'
 import { Routes } from './routes/index.routes'
 import { requestLoggerMiddleware } from './middlewares/logger.middleware'
-import { responseHandler } from './middlewares/response.handler'
 import { authorizationHandler } from './middlewares/authorization_middleware'
 import { errorHandler } from './middlewares/error.handler'
 import { serverLogger } from './common/server_logger'
 import { sleep } from '@turnkeyid/utils-ts'
+import { responseMiddlewareHandler } from './middlewares/response.middleware'
 
 export class ApiApp {
   private readonly _config = serverConfig.api
+  private _logger = serverLogger
 	
   private _provideRoutes(app: ApiClient) {
     const recursiveRoutes = (routingObject: any, prefix = ``) => {
@@ -51,7 +52,7 @@ export class ApiApp {
       
       this._provideRoutes(app)
       
-      app.use(responseHandler)
+      app.use(responseMiddlewareHandler)
       app.use(errorHandler)
     } catch (error) {
       throw error
@@ -60,11 +61,18 @@ export class ApiApp {
   
   private readonly _portClear = async () => {
     if (await checkPort(this._config.port) === false) {
-      serverLogger({
-        name: `api_application`,
-        subName: `_portClear`,
-        message: `killing port ${ this._config.port }`,
-      })
+      this._logger(
+        `InitHttpServer`,
+        {
+          message: `
+      ###			---			###
+      🛡️	Server listening on port : ${serverConfig.api.port}		🛡️
+      🛡️	Server environment	: ${serverConfig.api.env}	🛡️ 
+      ###			---			###
+      `,
+        },
+        `info`,
+      )
       await killer.kill(this._config.port)
       await sleep(1000)
     }
@@ -77,12 +85,18 @@ export class ApiApp {
       await this._provideMiddlewares(app)
       const server = createServer(app)
       server.listen(this._config.port, () => {
-        serverLogger({
-          name: `api_application`,
-          subName: `startApp`,
-          message: `\n Server started on port: ${ this._config.port }`
-          + `\n Environment: ${ process.env.NODE_ENV }`,
-        })
+        this._logger(
+          `InitHttpServer`,
+          {
+            message: `
+        ###			---			###
+        🛡️	Server listening on port : ${serverConfig.api.port}		🛡️
+        🛡️	Server environment	: ${serverConfig.api.env}	🛡️ 
+        ###			---			###
+        `,
+          },
+          `info`,
+        )
       })
     } catch (error) {
       throw error

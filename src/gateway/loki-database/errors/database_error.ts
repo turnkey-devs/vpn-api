@@ -1,4 +1,4 @@
-import { BaseError, ErrorScope } from "@server/core/common/errors/base_error"
+import { BaseError, ErrorScope } from "@turnkeyid/utils-ts"
 
 export class DatabaseError extends BaseError {
   public name = `DATABASE_ERROR`

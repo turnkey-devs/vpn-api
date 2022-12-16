@@ -1,14 +1,13 @@
 
 import type { Request, Response } from "express"
-import { ExpressError } from "../errors/express.error"
 import type { NextFunctionArguments, NextFunctionType } from "../model/next_function.model"
 import { fileResponse } from "../responses/file_response"
 import { errorHandler } from "./error.handler"
 import { responseLoggerMiddleware } from "./logger.middleware"
 import { serverLogger } from "../logger/server_logger"
 import { isEmpty } from "@turnkeyid/utils-ts"
-import { mainLogger } from "@server/core/logger/appname_logger"
 import { createErrorResponse } from "../responses/error_response"
+import { mainLogger } from "@server/core/logger/pretty_logger"
 
 class HandledError extends Error {}
 export const responseMiddlewareHandler = async (

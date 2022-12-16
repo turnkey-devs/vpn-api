@@ -1,11 +1,10 @@
-import { arrayFilterFunc, DeepPartial } from "@server/core/common/common_utils"
-import { DeepObjectMerge } from "@server/core/common/deep_object_merge"
-import { findManyQuery, QueryType } from "@server/core/common/find_query"
-import { isEmpty } from "@server/core/common/is_empty"
-import { RequestContext } from "@server/core/models/request_context"
+import type { RequestContext } from "@server/core/models/request_context"
+import type { DeepPartial, QueryType } from "@turnkeyid/utils-ts"
+import { DeepObjectMerge, isEmpty, arrayFilterFunc, findManyQuery } from "@turnkeyid/utils-ts"
+import { DatabaseError } from "@turnkeyid/utils-ts/utils"
 import DataLoader from 'dataloader'
-import { Collection, createNewLokiClient, DBClient } from "../clients/lokidb_client"
-import { DatabaseError } from "../errors/database_error"
+import type { Collection } from "../clients/lokidb_client"
+import { createNewLokiClient } from "../clients/lokidb_client"
 
 export const LokiJsBaseRepositoryRefactor = async <M extends Record<string, any> = any>(
   _context: RequestContext,
@@ -42,7 +41,7 @@ export const LokiJsBaseRepositoryRefactor = async <M extends Record<string, any>
     
     const findByQuery = async (filter: QueryType<M>) => {
       try {
-        const results = (_collection?.find(filter) ?? [])
+        const results = (_collection?.find(filter as any) ?? [])
         return results.filter(arrayFilterFunc)
       } catch (error) {
       // Do any

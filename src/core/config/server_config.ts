@@ -1,5 +1,3 @@
-import { debugLogSync } from "../common/debug_log"
-
 export const serverConfig = {
   merchant: {
     front_end_host: `${ process.env.FRONT_END_HOST }`,
@@ -19,12 +17,4 @@ export const serverConfig = {
     notif_throttle: Number(process.env.NOTIF_THROTTLE ?? 2),
     interval: Number(process.env.NOTIF_INTERVAL ?? 30_000 /* default: 30 seconds */),
   },
-}
-
-try {
-  if (!serverConfig.merchant?.front_end_host)
-    throw new Error(`merchant.front_end_host undefined!`)
-} catch (error) {
-  debugLogSync({ fileTitle: `server` }, { error })
-  throw new Error(`[ServerConfig: FATAL ERROR]: config error, check log!`)
 }

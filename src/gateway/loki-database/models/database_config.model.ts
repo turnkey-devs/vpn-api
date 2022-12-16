@@ -1,4 +1,4 @@
-import { modelFactory } from "@server/core/common/model_factory"
+import { modelFactory } from "@turnkeyid/utils-ts";
 
 export class DatabaseConfig {
   constructor(

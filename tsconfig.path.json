@@ -1,0 +1,36 @@
+{
+  "ts-node": {
+    "transpileOnly": true,
+    "require": [
+      "typescript-transform-paths/register"
+    ],
+  },
+  "compilerOptions": {
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "@server/ui/*": [
+        "./src/ui/*"
+      ],
+      "@server/core/*": [
+        "./src/core/*"
+      ],
+      "@server/*": [
+        "./src/*"
+      ]
+    },
+    "plugins": [
+      {
+        "transform": "tsc-progress",
+        "title": "TSC"
+      },
+      {
+        "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      },
+    ],
+  }
+}

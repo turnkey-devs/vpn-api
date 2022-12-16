@@ -1,5 +1,4 @@
-import { asyncAwaitMap } from "./async_await_map"
-import { sleep } from "./common_utils"
+import { asyncAwaitMap, sleep } from "@turnkeyid/utils-ts";
 
 type RetryType = {
   result?: any;

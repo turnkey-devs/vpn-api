@@ -1,6 +1,4 @@
-import { DeepRequired, ExcludeMethod } from "@server/core/common/common_utils"
-import { isEmpty } from "@server/core/common/is_empty"
-import { modelFactory } from "@server/core/common/model_factory"
+import { DeepRequired, isEmpty, modelFactory } from "@turnkeyid/utils-ts"
 import { QuizAuth } from "../server/middlewares/models/quiz_auth_payload"
 
 /**

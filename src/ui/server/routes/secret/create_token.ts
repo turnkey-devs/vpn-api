@@ -1,5 +1,5 @@
-import { SecureJWT } from '@server/core/services/security/secure_jwt';
 import { getDateOffset, isEmpty } from '@turnkeyid/utils-ts';
+import { SecureJWT } from '@turnkeyid/utils-ts/utils';
 import { Request, Response, Router } from 'express'
 import { ExpressError } from '../../errors/express.error';
 import { QuizAuth } from '../../middlewares/models/quiz_auth_payload';
@@ -12,6 +12,7 @@ SecretRouter.post("/create_token",
     async (_request: Request, _response: Response, next: NextFunctionType) => {
         try {
             const {
+                client_id,
                 secret,
                 expired,
                 environment,
@@ -22,6 +23,7 @@ SecretRouter.post("/create_token",
 
             const tokenExpired = !isEmpty(expired) ? Number(expired) : getDateOffset(Date.now(), 1, `year`).valueOf()
             const token = secureJWT.encryptPayload<QuizAuth>({
+                client_id,
                 secret,
                 environment,
                 scope: `PUBLIC`,

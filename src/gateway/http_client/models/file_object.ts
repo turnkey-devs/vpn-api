@@ -1,5 +1,5 @@
+import { modelFactory } from "@turnkeyid/utils-ts"
 import { Buffer } from "buffer"
-import { modelFactory } from "@server/core/common/model_factory"
 
 export type FileObjectContent = Buffer | string
 export type EncodingType = 'utf-8' | 'ascii' | 'binary' | 'base64'
