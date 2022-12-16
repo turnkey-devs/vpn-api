@@ -12,9 +12,10 @@ import { errorHandler } from './middlewares/error.handler'
 import { serverLogger } from './common/server_logger'
 import { sleep } from '@turnkeyid/utils-ts'
 import { responseMiddlewareHandler } from './middlewares/response.middleware'
+import { requestMiddlewareHandler } from './middlewares/request.middleware'
 
 export class ApiApp {
-  private readonly _config = serverConfig.api
+  private readonly _config = serverConfig().api
   private _logger = serverLogger
 	
   private _provideRoutes(app: ApiClient) {
@@ -47,7 +48,7 @@ export class ApiApp {
       app.use(cors())
       app.use(helmet())
       
-      app.use(requestLoggerMiddleware)
+      app.use(requestMiddlewareHandler)
       app.use(authorizationHandler)
       
       this._provideRoutes(app)
@@ -55,6 +56,7 @@ export class ApiApp {
       app.use(responseMiddlewareHandler)
       app.use(errorHandler)
     } catch (error) {
+      this._logger(`_provideMiddleware:Err`, { error }, `error`)
       throw error
     }
   }
@@ -66,8 +68,8 @@ export class ApiApp {
         {
           message: `
       ###			---			###
-      🛡️	Server listening on port : ${serverConfig.api.port}		🛡️
-      🛡️	Server environment	: ${serverConfig.api.env}	🛡️ 
+      🛡️	Server listening on port : ${this._config.port}		🛡️
+      🛡️	Server environment	: ${this._config.env}	🛡️ 
       ###			---			###
       `,
         },
@@ -90,8 +92,8 @@ export class ApiApp {
           {
             message: `
         ###			---			###
-        🛡️	Server listening on port : ${serverConfig.api.port}		🛡️
-        🛡️	Server environment	: ${serverConfig.api.env}	🛡️ 
+        🛡️	Server listening on port : ${this._config.port}		🛡️
+        🛡️	Server environment	: ${this._config.env}	🛡️ 
         ###			---			###
         `,
           },
