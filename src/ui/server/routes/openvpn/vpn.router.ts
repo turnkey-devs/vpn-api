@@ -1,10 +1,11 @@
 import { Router } from 'express'
 import { exec } from 'child_process'
 import { easyExistPath } from '@turnkeyid/utils-ts'
-import { ExpressError } from '../../errors/express.error'
+import {ExpressError, UnauthorizedError} from '../../errors/express.error'
 import { NextFunctionType } from '../../model/next_function.model'
 import { readFileSync } from 'fs'
 import path from 'path'
+
 
 const defaultCertValidDay = process.env.DEFAULT_CERT_VALID_DAY
 const defaultRevokeReason = process.env.DEFAULT_REVOKE_REASON
@@ -23,6 +24,10 @@ const isKeyExist = (name: string) => easyExistPath(`${privateKeyPath}/${name}.ke
 VpnRouter.get(`/check-register`, (_request, _response, next: NextFunctionType) => {
     try {
         const { name } = _request.query
+
+        if (!_request.access?.client?.isAuthenticated()) {
+            throw new UnauthorizedError('unauthorized request to this endpoint!');
+        }
 
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
@@ -52,6 +57,10 @@ VpnRouter.get(`/check-register`, (_request, _response, next: NextFunctionType) =
 VpnRouter.post('/add-client', (_request, _response, next: NextFunctionType) => {
     try {
         const { name, days } = _request.body
+
+        if (!_request.access?.client?.isAuthenticated()) {
+            throw new UnauthorizedError('unauthorized request to this endpoint!');
+        }
 
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
@@ -87,8 +96,13 @@ VpnRouter.post('/revoke-client', (_request, _response, next: NextFunctionType) =
     try {
         const { name, reason } = _request.body
 
+        if (!_request.access?.client?.isAuthenticated()) {
+            throw new UnauthorizedError('unauthorized request to this endpoint!');
+        }
+
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
+
 
         exec(`${preCommand} ${revokeClientScript} ${name} ${reason ?? defaultRevokeReason}`, (error, stdout, stderr) => {
             if (error) throw new ExpressError(error.message)
@@ -109,6 +123,10 @@ VpnRouter.post('/revoke-client', (_request, _response, next: NextFunctionType) =
 VpnRouter.post(`/renew-cert`, (_request, _response, next: NextFunctionType) => {
     try {
         const { name, days } = _request.body
+
+        if (!_request.access?.client?.isAuthenticated()) {
+            throw new UnauthorizedError('unauthorized request to this endpoint!');
+        }
 
         if (!name)
             throw new ExpressError({ message: 'client name is required' })
