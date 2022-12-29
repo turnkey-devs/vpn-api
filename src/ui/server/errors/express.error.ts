@@ -13,3 +13,8 @@ export class ExpressError extends BaseError {
   })
 }
 
+export class UnauthorizedError extends ExpressError {
+  name = `UNAUTHORIZED`
+  public httpStatus = 403
+}
+
